@@ -1,0 +1,33 @@
+{
+	"name": "ds_filesource_source",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sql_for_watermarkdb",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "lastmodifydate",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "file_source"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

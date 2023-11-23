@@ -1,0 +1,33 @@
+{
+	"name": "ds_sink_sqlqueriesdestination_db",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sqlserver_destination",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "name",
+				"type": "varchar"
+			},
+			{
+				"name": "lastmodifydate",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "file_source"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
