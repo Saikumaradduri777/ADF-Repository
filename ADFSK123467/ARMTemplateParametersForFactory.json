@@ -1,0 +1,39 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "ADFSK123467"
+		},
+		"AzureDataLakeStorage1_accountKey": {
+			"value": ""
+		},
+		"LS_Azure_ADLS_accountKey": {
+			"value": ""
+		},
+		"SqlServer1_connectionString": {
+			"value": ""
+		},
+		"SqlServer11_connectionString": {
+			"value": ""
+		},
+		"SqlServer12_connectionString": {
+			"value": ""
+		},
+		"SqlServer13_connectionString": {
+			"value": ""
+		},
+		"ls_sql_for_watermarkdb_connectionString": {
+			"value": ""
+		},
+		"ls_sqlserver_destination_connectionString": {
+			"value": ""
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"value": "https://saistorageaccount12356.dfs.core.windows.net/"
+		},
+		"LS_Azure_ADLS_properties_typeProperties_url": {
+			"value": "https://saistorageaccount12356.dfs.core.windows.net/"
+		}
+	}
+}
