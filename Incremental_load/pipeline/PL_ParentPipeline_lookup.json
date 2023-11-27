@@ -5,7 +5,14 @@
 			{
 				"name": "Lookup1",
 				"type": "Lookup",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Set variable1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -78,7 +85,7 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "ForEach1",
+						"activity": "Set variable2",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -102,6 +109,13 @@
 							},
 							"type": "String"
 						},
+						"endTime": {
+							"value": {
+								"value": "@activity('Set variable2').value",
+								"type": "Expression"
+							},
+							"type": "DateTime"
+						},
 						"pipelineName": {
 							"value": {
 								"value": "@pipeline().Pipeline",
@@ -115,6 +129,13 @@
 								"type": "Expression"
 							},
 							"type": "String"
+						},
+						"startTime": {
+							"value": {
+								"value": "@activity('Set variable1').value",
+								"type": "Expression"
+							},
+							"type": "DateTime"
 						},
 						"triggerName": {
 							"value": {
@@ -136,8 +157,57 @@
 					"referenceName": "ls_sqlserver_destination",
 					"type": "LinkedServiceReference"
 				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Start_Time",
+					"value": {
+						"value": "@utcnow()",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set variable2",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "ForEach1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "End_Time",
+					"value": {
+						"value": "@utcnow()",
+						"type": "Expression"
+					}
+				}
 			}
 		],
+		"variables": {
+			"Start_Time": {
+				"type": "String"
+			},
+			"End_Time": {
+				"type": "String"
+			}
+		},
 		"annotations": [],
 		"lastPublishTime": "2023-11-22T13:37:18Z"
 	},
