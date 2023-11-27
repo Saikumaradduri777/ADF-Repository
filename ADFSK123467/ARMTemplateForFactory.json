@@ -72,22 +72,17 @@
 						"userProperties": [],
 						"typeProperties": {
 							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "AzureBlobFSReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
+								"type": "SqlServerSource",
+								"sqlReaderQuery": "select tablename, DATE_COLUMN FROM watermarktable ",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
 							},
 							"dataset": {
-								"referenceName": "DelimitedText1",
+								"referenceName": "SqlServerTable1",
 								"type": "DatasetReference",
 								"parameters": {}
 							},
-							"firstRowOnly": true
+							"firstRowOnly": false
 						}
 					},
 					{
@@ -97,7 +92,7 @@
 							{
 								"activity": "Lookup1",
 								"dependencyConditions": [
-									"Failed"
+									"Succeeded"
 								]
 							}
 						],
@@ -122,11 +117,11 @@
 										"waitOnCompletion": true,
 										"parameters": {
 											"TableName": {
-												"value": "item().TableName",
+												"value": "@item().TableName",
 												"type": "Expression"
 											},
 											"WatermarkColumn": {
-												"value": "@item().WatermarkColumn",
+												"value": "@item().DATE_COLUMN",
 												"type": "Expression"
 											}
 										}
@@ -143,7 +138,7 @@
 				"lastPublishTime": "2023-11-22T13:37:18Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DelimitedText1')]",
+				"[concat(variables('factoryId'), '/datasets/SqlServerTable1')]",
 				"[concat(variables('factoryId'), '/pipelines/pl_incrementalload_parameters')]"
 			]
 		},
@@ -574,6 +569,42 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/SqlServerTable1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_sqlserver_destination",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "tablename",
+						"type": "varchar"
+					},
+					{
+						"name": "watermarkvalue",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "DATE_COLUMN",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "watermarktable"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_sqlserver_destination')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ds_filesource_source')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -775,7 +806,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "ls_sql_for_watermarkdb",
+					"referenceName": "ls_sqlserver_destination",
 					"type": "LinkedServiceReference"
 				},
 				"parameters": {
@@ -794,7 +825,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_sql_for_watermarkdb')]"
+				"[concat(variables('factoryId'), '/linkedServices/ls_sqlserver_destination')]"
 			]
 		},
 		{
