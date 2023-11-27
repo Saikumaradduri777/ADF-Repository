@@ -2,7 +2,7 @@
 	"name": "sqlqueries_sinkdatasetparameters",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "ls_sql_for_watermarkdb",
+			"referenceName": "ls_sqlserver_destination",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {

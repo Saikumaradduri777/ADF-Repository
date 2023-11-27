@@ -16,21 +16,16 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "DelimitedTextSource",
-						"storeSettings": {
-							"type": "AzureBlobFSReadSettings",
-							"recursive": true,
-							"enablePartitionDiscovery": false
-						},
-						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
-						}
+						"type": "SqlServerSource",
+						"sqlReaderQuery": "select tablename, DATE_COLUMN FROM watermarktable ",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "DelimitedText1",
+						"referenceName": "SqlServerTable1",
 						"type": "DatasetReference"
 					},
-					"firstRowOnly": true
+					"firstRowOnly": false
 				}
 			},
 			{
@@ -40,7 +35,7 @@
 					{
 						"activity": "Lookup1",
 						"dependencyConditions": [
-							"Failed"
+							"Succeeded"
 						]
 					}
 				],
@@ -65,11 +60,11 @@
 								"waitOnCompletion": true,
 								"parameters": {
 									"TableName": {
-										"value": "item().TableName",
+										"value": "@item().TableName",
 										"type": "Expression"
 									},
 									"WatermarkColumn": {
-										"value": "@item().WatermarkColumn",
+										"value": "@item().DATE_COLUMN",
 										"type": "Expression"
 									}
 								}
